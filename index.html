@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>HN Comments Semantic Search</title>
@@ -8,100 +9,97 @@
     <script type="module" src="./src/js/index.js"></script>
 
     <link rel="shortcut icon" href="./favicon.png">
-    <meta name="description"
-          content="HN Comments Semantic Search with Typesense">
+    <meta name="description" content="HN Comments Semantic Search with Typesense">
     <meta name="keywords"
-          content="search, semantic search, hybrid search, vector search, HN comments, search engine, typesense"/>
+        content="search, semantic search, hybrid search, vector search, HN comments, search engine, typesense" />
 
+
+    <style>
+        .no {
+            display: block;
+        }
+    </style>
 </head>
+
 <body>
-<div class="container py-2">
-    <div class="bg-light">
-        <div class="bg-primary">
-            &nbsp;
-        </div>
-        <div class="py-3 px-4">
-            <div class="row">
-                <div class="col-sm">
-                    <h1 class="h5 mb-3">Hacker News Comments - Hybrid Search</h1>
-                    <div>Keyword Search + Semantic Search + Filtering + Faceting</div>
-                    <div>Powered by <a href="https://typesense.org" target="_blank">Typesense</a></div>
-                    <div class="mt-3">
-                        <ul>
-                            <li> This is a collection of 324K HN comments during the month of Oct 2022.</li>
-                            <li>The data is indexed in Typesense using the new <a href="https://typesense.org/docs/0.25.0/api/vector-search.html#using-built-in-models" target="_blank">built-in embedding generation</a> (using S-BERT).</li>
-                            <li>When a search query is typed in "Semantic Search" mode, Typesense automatically generates embeddings for the query using S-BERT, then does a nearest-neighbor search and returns the closest matches.</li>
-                            <li>When a search query is typed in "Hybrid" mode, Typesense does both a regular keyword search and semantic search and combines the results using Rank Fusion.</li>
-                        </ul>
-                        <a href="https://github.com/typesense/showcase-hn-comments-semantic-search"
-                           target="_blank">View Source</a>
-                    </div>
-                </div>
+    <div class="container py-2">
+        <div class="bg-light">
+            <div class="bg-primary">
+                &nbsp;
             </div>
-            <div class="row mt-4">
-                <div class="col-sm">
-                    <div class="row">
-                        <div class="col-sm-10 pe-sm-1">
-                            <div id="searchbox"></div>
-                        </div>
-                        <div class="col-sm-2 ps-sm-1 mt-2 mt-sm-0">
-                            <select class="form-select" id="search-type-select"
-                                    aria-label="Search Type">
-                                <option value="semantic" selected>Semantic Search</option>
-                                <option value="keyword">Keyword Search</option>
-                                <option value="hybrid">Hybrid Search</option>
-                            </select>
-                        </div>
+            <div class="py-3 px-4">
+                <div class="row">
+                    <div class="col-sm">
+                        <div>Keyword Search + Semantic Search + Filtering + Faceting</div>
                     </div>
-
-                    <div class="row mt-1">
+                    <div class="row mt-4">
                         <div class="col-sm">
-                            Try:
-                            <span id="example-search-terms">
-                                  <a role="button" class="clickable-search-term">cinema</a>,
-                                  <a role="button" class="clickable-search-term">beethoven</a>,
-                                  <a role="button" class="clickable-search-term">napster</a>,
-                                  <a role="button" class="clickable-search-term">network congestion</a>,
-                                  <a role="button" class="clickable-search-term">high growth</a>,
-                                  <a role="button" class="clickable-search-term">ssl cipher</a>
-                                </span>
-                        </div>
-                        <div class="col-sm-4">
-                            <div id="stats"></div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col-sm-2">
-                    <nav class="navbar navbar-expand-md navbar-light p-0 pb-3">
-                        <button class="navbar-toggler text-primary border-light-2" type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#filters-section"
-                                aria-controls="filters-section" aria-expanded="false" aria-label="Toggle filters">
-                            <span class="navbar-toggler-icon"></span><span class="ml-2"
-                                                                           style="font-size: 13px;">Refine</span>
-                        </button>
-
-                        <div class="collapse navbar-collapse d-md-block mt-3 mt-md-0" id="filters-section">
-                            <div class="row mb-2">
-                                <div class="col-md">
-                                    <div id="users-refinement-list"></div>
+                            <div class="row">
+                                <div class="col-sm-10 pe-sm-1">
+                                    <div id="searchbox"></div>
+                                </div>
+                                <div class="col-sm-2 ps-sm-1 mt-2 mt-sm-0">
+                                    <select class="form-select" id="search-type-select" aria-label="Search Type">
+                                        <option value="semantic">Semantic Search</option>
+                                        <option value="keyword" selected>Keyword Search</option>
+                                        <option value="hybrid">Hybrid Search</option>
+                                    </select>
                                 </div>
                             </div>
+
+                            <div class="row mt-1">
+                                <div class="col-sm">
+                                    Try:
+                                    <span id="example-search-terms">
+                                        <a role="button" class="clickable-search-term">health</a>,
+                                        <a role="button" class="clickable-search-term">criminal</a>,
+                                        <a role="button" class="clickable-search-term">food</a>,
+                                        <a role="button" class="clickable-search-term">device</a>,
+                                        <a role="button" class="clickable-search-term">comedy</a>,
+                                        <a role="button" class="clickable-search-term">latest</a>
+                                    </span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div id="stats"></div>
+                                </div>
+                            </div>
+
                         </div>
-                    </nav>
-                </div>
-                <div class="col-sm-10">
-                    <div id="hits"></div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-sm-2">
+                            <nav class="navbar navbar-expand-md navbar-light p-0 pb-3">
+                                <button class="navbar-toggler text-primary border-light-2" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#filters-section"
+                                    aria-controls="filters-section" aria-expanded="false" aria-label="Toggle filters">
+                                    <span class="navbar-toggler-icon"></span><span class="ml-2"
+                                        style="font-size: 13px;">Refine</span>
+                                </button>
+
+                                <div class="collapse navbar-collapse d-md-block mt-3 mt-md-0" id="filters-section">
+                                    <div class="row mb-2">
+                                        <div class="col-md">
+                                            <div id="users-refinement-list"></div>
+                                            <div id="language-refinement-list"></div>
+                                            <div id="gernes-refinement-list"></div>
+                                            <div id="networks-refinement-list"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="col-sm-5">
+                            <div id="hits"></div>
+                        </div>
+                        <!-- <div class="col-sm-5">
+                            <h4>Frndly TV Search Results</h4>
+                            <div id="frndly"></div>
+                        </div> -->
+                    </div>
                 </div>
             </div>
-
-
         </div>
-    </div>
-</div>
 </body>
+
 </html>
